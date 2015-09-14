@@ -23,24 +23,25 @@ project(COTPasses)
 
 set(PATH_TO_LLVM_SOURCE "" CACHE PATH
     "Path to LLVM source code. Not necessary if using an installed LLVM.")
-set(PATH_TO_LLVM_BUILD "" CACHE PATH
-    "Path to the directory where LLVM was built or installed.")
+set(LLVM_BINARY_DIR "" CACHE PATH "llvm build")
+set(LLVM_MAIN_BUILD_DIR ${LLVM_BINARY_DIR})
+set(PATH_TO_LLVM_BUILD ${LLVM_BINARY_DIR})
 
 if(PATH_TO_LLVM_SOURCE)
   if(NOT EXISTS "${PATH_TO_LLVM_SOURCE}/cmake/config-ix.cmake")
     message(FATAL_ERROR "Please set PATH_TO_LLVM_SOURCE to the root "
             "directory of LLVM source code.")
   else()
-    get_filename_component(LLVM_MAIN_SRC_DIR ${PATH_TO_LLVM_SOURCE}
-                           ABSOLUTE)
+    get_filename_component(ABSOLUTE LLVM_MAIN_SRC_DIR ${PATH_TO_LLVM_SOURCE})
     list(APPEND CMAKE_MODULE_PATH "${LLVM_MAIN_SRC_DIR}/cmake/modules")
   endif()
 endif()
 
 list(APPEND CMAKE_MODULE_PATH "${PATH_TO_LLVM_BUILD}/share/llvm/cmake")
 
-get_filename_component(LLVM_MAIN_BUILD_DIR ${PATH_TO_LLVM_BUILD}
-                       ABSOLUTE)
+#get_filename_component(ABSOLUTE LLVM_MAIN_BUILD_DIR ${PATH_TO_LLVM_BUILD})
+#get_filename_component(ABSOLUTE LLVM_MAIN_BUILD_DIR ${LLVM_BINARY_DIR})
+#set(LLVM_MAIN_BUILD_DIR "/home/keru/Documenti/llvm-work/build" CACHE PATH "")
 
 include(AddLLVM)
 include(HandleLLVMOptions)
